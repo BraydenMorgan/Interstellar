@@ -29,6 +29,6 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          IMAGE_NAME="ghcr.io/$(echo ${{ github.actor }} | tr '[:upper:]' '[:lower:]')/interstellar-docker-render"
+          IMAGE_NAME="ghcr.io/$(echo ${{ github.actor }} | tr '[:upper:]' '[:lower:]')/dockerinstaller-app"
           docker build . -t $IMAGE_NAME
           docker push $IMAGE_NAME
