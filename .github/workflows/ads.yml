@@ -7,7 +7,7 @@ on:
 
 jobs:
   update-Ad-Free:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04  # Explicitly use ubuntu-22.04
 
     steps:
       - name: Checkout main branch
