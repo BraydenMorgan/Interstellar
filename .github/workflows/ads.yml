@@ -11,9 +11,17 @@ jobs:
 
     steps:
       - name: Checkout main branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           ref: main
+
+      - name: Set up Git
+        env:
+          GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
+          GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
+        run: |
+          git config --global user.name "${GIT_USERNAME:-github-actions}"
+          git config --global user.email "${GIT_EMAIL:-github-actions@github.com}"
 
       - name: Remove Ads
         run: |
@@ -31,14 +39,13 @@ jobs:
           sed -i '1,9d' static/assets/js/m.js
   
       - name: Commit changes
-        env:
-          GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
-          GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
         run: |
-          git config --global user.name "${GIT_USERNAME}"
-          git config --global user.email "${GIT_EMAIL}"
           git add static/assets/js/m.js
-          git commit -m "Remove specific JS code from m.js"
+          if git diff --cached --exit-code; then
+            echo "No changes to commit."
+          else
+            git commit -m "Remove specific JS code from m.js"
+          fi
 
       - name: Push changes to Ad-Free branch
         run: |
